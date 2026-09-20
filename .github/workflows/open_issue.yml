@@ -1,18 +1,28 @@
-name: Open new issue automatically
+name: Fully Automated Engine Workflow
+
 on:
-  workflow_dispatch: # Manual trigger option
+  push:
+    branches: [ main ]          # Jab bhi code push hoga, automatic chalega
+  pull_request:
+    branches: [ main ]          # PR aane par automatic chalega
   schedule:
-    - cron: '0 */6 * * *' # Har 6 ghante baad automatic chalega
+    - cron: '0 */6 * * *'       # Har 6 ghante baad background me automatic chalega
+  workflow_dispatch:           # Manual trigger ka option bhi rahega
 
 jobs:
-  open-issue:
+  auto-task:
     runs-on: ubuntu-latest
     permissions:
       contents: read
       issues: write
     steps:
-      - run: |
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Auto Create Issue Task
+        run: |
           gh issue --repo ${{ github.repository }} \
-            create --title "Automatic Task Run" --body "Automated background process executed."
+            create --title "Automated Engine Task Executed" \
+            --body "Workflow ran automatically via GitHub Actions runner."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
