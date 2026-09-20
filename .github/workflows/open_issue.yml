@@ -1,5 +1,8 @@
-name: Open new issue
-on: workflow_dispatch
+name: Open new issue automatically
+on:
+  workflow_dispatch: # Manual trigger option
+  schedule:
+    - cron: '0 */6 * * *' # Har 6 ghante baad automatic chalega
 
 jobs:
   open-issue:
@@ -10,6 +13,6 @@ jobs:
     steps:
       - run: |
           gh issue --repo ${{ github.repository }} \
-            create --title "Issue title" --body "Issue body"
+            create --title "Automatic Task Run" --body "Automated background process executed."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
